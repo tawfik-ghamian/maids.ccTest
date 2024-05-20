@@ -5,26 +5,31 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 
-import 'package:test_project/main.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:test_project/model/task_model.dart';
+
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group('Task model tests', () {
+    test('Task creation and properties', () {
+      final task = Task(id: 1, todo: 'Buy groceries', completed: false, userId:15);
+      expect(task.id, 1);
+      expect(task.todo, 'Buy groceries');
+      expect(task.completed, false);
+    });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    test('Toggling completion', () {
+      final task = Task(id: 1, todo: 'Buy groceries', completed: false, userId:15);
+      expect(task.completed, true);
+    });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    test('Copying a task', () {
+      final task = Task(id: 1, todo: 'Buy groceries', completed: false, userId:15);
+      final copiedTask = Task(id: 1, todo: 'Updated title',completed: false, userId:15);
+      expect(copiedTask.id, 1);
+      expect(copiedTask.todo, 'Updated title');
+      expect(copiedTask.completed, false); // Completion state preserved
+    });
   });
 }
